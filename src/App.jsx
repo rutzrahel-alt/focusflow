@@ -1,5 +1,50 @@
 import { useState, useEffect, useRef } from "react";
 
+const THEMES = {
+  darkPurple: {
+    name:"🌙 Dark Purple", dark:true,
+    bg:"#0f0f13", surface:"#1a1a24", surfaceHover:"#22222f",
+    accent:"#7c6af7", accentLight:"#a89af9",
+    green:"#4ade80", yellow:"#fbbf24", red:"#f87171",
+    text:"#f0eeff", muted:"#7e7a9a", border:"#2a2a3a",
+  },
+  darkOcean: {
+    name:"🌊 Dark Ocean", dark:true,
+    bg:"#0a0f1a", surface:"#111827", surfaceHover:"#1a2535",
+    accent:"#06b6d4", accentLight:"#67e8f9",
+    green:"#34d399", yellow:"#fbbf24", red:"#f87171",
+    text:"#e0f7ff", muted:"#6b8a9a", border:"#1e3040",
+  },
+  darkForest: {
+    name:"🌿 Dark Forest", dark:true,
+    bg:"#0a130a", surface:"#121f12", surfaceHover:"#1a2e1a",
+    accent:"#22c55e", accentLight:"#86efac",
+    green:"#4ade80", yellow:"#fbbf24", red:"#f87171",
+    text:"#e8f5e8", muted:"#6b8a6b", border:"#1e3a1e",
+  },
+  lightMinimal: {
+    name:"☀️ Light", dark:false,
+    bg:"#f8f9fa", surface:"#ffffff", surfaceHover:"#f1f3f5",
+    accent:"#7c6af7", accentLight:"#5b4fd4",
+    green:"#16a34a", yellow:"#d97706", red:"#dc2626",
+    text:"#1a1a2e", muted:"#6b7280", border:"#e5e7eb",
+  },
+  lightRose: {
+    name:"🌸 Light Rose", dark:false,
+    bg:"#fff5f7", surface:"#ffffff", surfaceHover:"#fce7ec",
+    accent:"#e11d74", accentLight:"#be185d",
+    green:"#16a34a", yellow:"#d97706", red:"#dc2626",
+    text:"#1a0a10", muted:"#9d6b7a", border:"#fce7ec",
+  },
+  lightGray: {
+    name:"🤍 Light Gray", dark:false,
+    bg:"#f3f4f6", surface:"#ffffff", surfaceHover:"#e9ebee",
+    accent:"#4f46e5", accentLight:"#4338ca",
+    green:"#16a34a", yellow:"#d97706", red:"#dc2626",
+    text:"#111827", muted:"#6b7280", border:"#d1d5db",
+  },
+};
+
 const T = {
   de: {
     appName:"FocusFlow", tagline:"ADHS-freundlicher Tagesplaner",
@@ -44,6 +89,7 @@ const T = {
     proFree:"Kostenlos weiternutzen",
     sounds:"Fokus-Sound:", soundOff:"Aus", soundRain:"🌧 Regen", soundWhite:"〰 White Noise", soundLofi:"🎵 Lo-Fi",
     lang:"🌍 Sprache", upgrade:"⭐ Pro",
+    themeLabel:"🎨 Theme",
     motivations:[
       "Du schaffst das – eine Aufgabe nach der anderen! 💪",
       "Dein ADHS-Gehirn ist kreativ und stark. Los geht's! 🧠",
@@ -97,6 +143,7 @@ const T = {
     proFree:"Continue for free",
     sounds:"Focus sound:", soundOff:"Off", soundRain:"🌧 Rain", soundWhite:"〰 White Noise", soundLofi:"🎵 Lo-Fi",
     lang:"🌍 Language", upgrade:"⭐ Pro",
+    themeLabel:"🎨 Theme",
     motivations:[
       "You've got this – one task at a time! 💪",
       "Your ADHD brain is creative and powerful. Let's go! 🧠",
@@ -107,13 +154,6 @@ const T = {
       "You're not lazy – your brain just needs the right start! ⚡",
     ]
   }
-};
-
-const COLORS = {
-  bg:"#0f0f13", surface:"#1a1a24", surfaceHover:"#22222f",
-  accent:"#7c6af7", accentLight:"#a89af9",
-  green:"#4ade80", yellow:"#fbbf24", red:"#f87171",
-  text:"#f0eeff", muted:"#7e7a9a", border:"#2a2a3a",
 };
 
 const FOCUS_DURATIONS = [5,10,15,25];
@@ -150,6 +190,10 @@ const defaultRoutine=[
 export default function FocusFlow(){
   const [lang,setLang]=useState(()=>load("ff_lang","de"));
   const t=T[lang];
+  const [themeKey,setThemeKey]=useState(()=>load("ff_theme","darkPurple"));
+  const COLORS=THEMES[themeKey]||THEMES.darkPurple;
+  const isDark=COLORS.dark;
+  useEffect(()=>save("ff_theme",themeKey),[themeKey]);
   const motivation=useRef(t.motivations[Math.floor(Math.random()*t.motivations.length)]);
 
   const [tasks,setTasks]=useState(()=>load("ff_tasks",defaultTasks));
@@ -353,6 +397,18 @@ export default function FocusFlow(){
               <button className="btn" onClick={()=>setShowPro(true)}
                 style={{background:`${COLORS.accent}22`,border:`1px solid ${COLORS.accent}44`,borderRadius:8,
                   padding:"4px 10px",color:COLORS.accentLight,fontSize:11}}>⭐ Pro</button>
+            </div>
+            {/* Theme picker */}
+            <div style={{display:"flex",gap:5,flexWrap:"wrap",justifyContent:"flex-end",marginTop:2}}>
+              {Object.entries(THEMES).map(([key,th])=>(
+                <button key={key} className="btn" onClick={()=>setThemeKey(key)}
+                  title={th.name}
+                  style={{width:22,height:22,borderRadius:"50%",padding:0,
+                    background:`linear-gradient(135deg,${th.accent},${th.bg})`,
+                    border:themeKey===key?`2px solid ${COLORS.text}`:`2px solid transparent`,
+                    transform:themeKey===key?"scale(1.2)":"scale(1)"}}>
+                </button>
+              ))}
             </div>
             <div style={{textAlign:"right"}}>
               <div style={{fontSize:11,color:COLORS.muted}}>{t.todayDone}</div>
