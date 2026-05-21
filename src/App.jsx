@@ -382,7 +382,7 @@ export default function FocusFlow(){
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
           <div>
             <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,letterSpacing:"-0.5px"}}>
-              Focus<span style={{color:COLORS.accent}}>Flow</span>
+              <span style={{color:COLORS.accent}}>Focus</span><span style={{color:COLORS.text}}>Flow</span>
             </h1>
             <p style={{color:COLORS.muted,fontSize:12,marginTop:1}}>{t.tagline}</p>
             <p style={{color:COLORS.muted,fontSize:12}}>
@@ -425,6 +425,28 @@ export default function FocusFlow(){
           <span style={{fontSize:11,color:COLORS.muted}}>{pct}{t.pctDone}</span>
           {streak>0&&<span style={{fontSize:11,color:COLORS.yellow}}>🔥 {streak} {t.streakLabel}</span>}
           {doneTasks>0&&<span style={{fontSize:11,color:COLORS.green}}>{t.greatJob}</span>}
+        </div>
+      </div>
+
+      {/* Theme picker bar */}
+      <div style={{width:"100%",maxWidth:480,marginBottom:14,background:COLORS.surface,
+        borderRadius:14,padding:"10px 14px",border:`1px solid ${COLORS.border}`,
+        display:"flex",alignItems:"center",gap:10}}>
+        <span style={{fontSize:12,color:COLORS.muted,flexShrink:0}}>🎨 Theme:</span>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap",flex:1}}>
+          {Object.entries(THEMES).map(([key,th])=>(
+            <button key={key} className="btn" onClick={()=>setThemeKey(key)}
+              title={th.name}
+              style={{display:"flex",alignItems:"center",gap:5,padding:"5px 10px",
+                borderRadius:20,fontSize:11,fontWeight:600,
+                background:themeKey===key?th.accent+"33":"transparent",
+                border:`1.5px solid ${themeKey===key?th.accent:COLORS.border}`,
+                color:themeKey===key?th.accent:COLORS.muted}}>
+              <span style={{width:10,height:10,borderRadius:"50%",display:"inline-block",
+                background:th.accent,flexShrink:0}}/>
+              {th.name.split(" ").slice(1).join(" ")}
+            </button>
+          ))}
         </div>
       </div>
 
