@@ -334,7 +334,7 @@ export default function FocusFlow(){
   if(!onboarded){
     const suggestions=t.ob_routineSuggestions;
     return(
-      <div style={{...base,display:"flex",flexDirection:"column",alignItems:"center",
+      <div style={{...base,color:C.text,display:"flex",flexDirection:"column",alignItems:"center",
         justifyContent:"center",padding:"24px 20px",
         backgroundImage:`radial-gradient(ellipse at 30% 20%,${C.accent}22 0%,transparent 60%)`}}>
         <style>{`
@@ -343,7 +343,10 @@ export default function FocusFlow(){
           .btn{transition:all 0.2s;cursor:pointer;border:none;}.btn:hover{opacity:0.85;transform:translateY(-1px);}
           @keyframes slide-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
           .su{animation:slide-up 0.4s ease forwards;}
-          input{outline:none;}input::placeholder{color:${C.muted};}
+          input{outline:none;}
+          input::placeholder{color:${C.muted};}
+          input{color:${C.text} !important; background:${C.surface};}
+          h1,h2,h3,p,span,div{color:inherit;}
         `}</style>
         <div style={{width:"100%",maxWidth:420}} className="su">
           {obStep>0&&(
@@ -358,7 +361,7 @@ export default function FocusFlow(){
           {obStep===0&&(
             <div style={{textAlign:"center"}}>
               <div style={{fontSize:64,marginBottom:16}}>🧠</div>
-              <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:32,fontWeight:800,marginBottom:12}}>
+              <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:32,fontWeight:800,marginBottom:12,color:C.text}}>
                 <span style={{color:C.accent}}>Focus</span><span style={{color:C.text}}>Flow</span>
               </h1>
               <p style={{fontSize:15,color:C.muted,lineHeight:1.7,marginBottom:32,whiteSpace:"pre-line"}}>{t.ob_welcomeDesc}</p>
@@ -370,7 +373,7 @@ export default function FocusFlow(){
 
           {obStep===1&&(
             <div>
-              <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,marginBottom:20}}>{t.ob_lang}</h2>
+              <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,marginBottom:20,color:C.text}}>{t.ob_lang}</h2>
               <div style={{display:"flex",gap:12}}>
                 {[["de","🇩🇪 Deutsch"],["en","🇬🇧 English"]].map(([l,label])=>(
                   <button key={l} className="btn" onClick={()=>setLang(l)}
@@ -389,7 +392,7 @@ export default function FocusFlow(){
 
           {obStep===2&&(
             <div>
-              <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,marginBottom:16}}>{t.ob_theme}</h2>
+              <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,marginBottom:16,color:C.text}}>{t.ob_theme}</h2>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
                 {Object.entries(THEMES).map(([key,th])=>(
                   <button key={key} className="btn" onClick={()=>setThemeKey(key)}
@@ -414,7 +417,7 @@ export default function FocusFlow(){
 
           {obStep===3&&(
             <div>
-              <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,marginBottom:4}}>{t.ob_routine}</h2>
+              <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,marginBottom:4,color:C.text}}>{t.ob_routine}</h2>
               <p style={{fontSize:13,color:C.muted,marginBottom:14}}>{t.ob_routineDesc}</p>
               <div style={{display:"flex",flexWrap:"wrap",gap:7,marginBottom:14}}>
                 {suggestions.map((s,i)=>{
@@ -456,7 +459,7 @@ export default function FocusFlow(){
 
           {obStep===4&&(
             <div>
-              <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,marginBottom:4}}>{t.ob_tasks}</h2>
+              <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:22,fontWeight:800,marginBottom:4,color:C.text}}>{t.ob_tasks}</h2>
               <p style={{fontSize:13,color:C.muted,marginBottom:14}}>{t.ob_tasksDesc}</p>
               <input value={obTask} onChange={e=>setObTask(e.target.value)}
                 onKeyDown={e=>e.key==="Enter"&&finishOnboarding()}
